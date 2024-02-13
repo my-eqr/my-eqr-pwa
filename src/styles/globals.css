@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .debug {
+        border: 1px solid red;
+    }
+    .debugWhite {
+        border: 1px solid white;
+    }
+}
+
+html {
+    overscroll-behavior-y: contain;
+    overscroll-behavior: none;
+}
+
+/* html {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+} */
