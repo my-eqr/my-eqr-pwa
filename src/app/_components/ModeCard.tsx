@@ -1,5 +1,5 @@
 import React from 'react'
-import { MODES } from '@/types'
+import { MODES } from '@/constants'
 
 import {
     Card,
@@ -30,9 +30,6 @@ const ModeCard = ({
     >
         <CardHeader className='p-0 py-2'>
             <div className='flex items-center justify-center'>{Icon}</div>
-            {/* <div className='hidden items-center justify-center md:flex'>
-                {Icon}
-            </div> */}
             <CardTitle
                 className={`text-xl font-bold md:text-3xl ${selected ? 'text-white' : 'text-darkGrey'}`}
             >

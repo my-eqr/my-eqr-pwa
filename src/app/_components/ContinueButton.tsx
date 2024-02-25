@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button'
 import { EnterIcon } from '@radix-ui/react-icons'
 import { useRouter } from 'next/navigation'
 import { useModeStore } from '@/store'
-import { COOKIES } from '@/types'
+import { SESSION_STORAGE } from '@/constants'
 
 const ContinueButton = () => {
     const router = useRouter()
     const { activeMode } = useModeStore()
 
     const onSelectModeHandler = async () => {
-        sessionStorage.setItem(COOKIES.ACTIVE_MODE, activeMode!)
+        sessionStorage.setItem(SESSION_STORAGE.ACTIVE_MODE, activeMode!)
         router.refresh()
     }
     return (

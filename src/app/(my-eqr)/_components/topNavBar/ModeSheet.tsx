@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { ProfileSvg } from '@/components/svgs'
 
 import {
@@ -16,9 +16,10 @@ import Mode from '@/app/_components/Mode'
 
 const ModeSheet = () => {
     const { activeMode } = useModeStore()
+    const [open, setOpen] = useState(false)
     return (
         <div className='flex flex-row items-center'>
-            <Sheet>
+            <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger className='mx-2 flex flex-row items-center gap-2 text-slate-600'>
                     <ProfileSvg />
                     <span className='hidden md:block'>{activeMode}</span>
@@ -33,7 +34,7 @@ const ModeSheet = () => {
                             Select Mode
                         </SheetTitle>
                         <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
-                            <Mode />
+                            <Mode setOpen={setOpen} />
                         </div>
                     </SheetHeader>
                 </SheetContent>

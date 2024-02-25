@@ -1,19 +1,21 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { COOKIES } from './types'
 
 export function middleware(request: NextRequest) {
-    // const activeMode = request.cookies.get(COOKIES.ACTIVE_MODE)?.value
-    // console.log('middleware', { activeMode, path: request.nextUrl.pathname })
-    // if (activeMode && request.nextUrl.pathname === '/') {
-    //     return NextResponse.redirect(new URL('/home', request.url))
-    // } else if (activeMode) {
-    //     return NextResponse.next()
-    // } else if (!activeMode) {
-    //     return NextResponse.redirect(new URL('/select-mode', request.url))
-    // }
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('current-path', request.nextUrl.pathname)
+    // console.log('requestHeaders', requestHeaders)
+
     if (request.nextUrl.pathname === '/') {
-        return NextResponse.redirect(new URL('/home', request.url))
+        return NextResponse.redirect(new URL('/home', request.url), {
+            headers: requestHeaders,
+        })
     }
+
+    return NextResponse.next({
+        request: {
+            headers: requestHeaders,
+        },
+    })
 }
 
 export const config = {

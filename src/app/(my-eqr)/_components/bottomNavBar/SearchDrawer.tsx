@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Dispatch, useLayoutEffect, useRef, useState } from 'react'
 import {
     Drawer,
     DrawerClose,
@@ -14,14 +14,32 @@ import { Button } from '@/components/ui/button'
 import { SearchSvg } from '@/components/svgs'
 import { Input } from '@/components/ui/input'
 import { usePathname } from 'next/navigation'
+import SearchNFilters from '../searchNFilters'
 
-const SearchDrawer = () => {
+interface SearchDrawerProps {
+    setIndicatorLeft: Dispatch<React.SetStateAction<number>>
+}
+
+const SearchDrawer = ({ setIndicatorLeft }: SearchDrawerProps) => {
+    const searchRef = useRef<HTMLButtonElement>(null)
     const pathname = usePathname()
+    const [open, setOpen] = useState(false)
+
+    useLayoutEffect(() => {
+        const isCarsPath = /^\/cars($|\/.*)/.test(pathname)
+        if (isCarsPath) {
+            setIndicatorLeft(searchRef.current?.offsetLeft! - 32 || 0)
+        }
+    }, [pathname, setIndicatorLeft])
+
     return (
-        <Drawer>
-            <DrawerTrigger>
+        <Drawer open={open} onOpenChange={setOpen}>
+            <DrawerTrigger
+                className='relative focus-visible:outline-none'
+                ref={searchRef}
+            >
                 <div
-                    className={`relative -top-12 z-40 flex h-20 w-20 items-center justify-center rounded-full ${pathname === '/info' ? 'bg-white' : 'bg-primaryColor'} shadow-2xl md:h-24 md:w-24`}
+                    className={` absolute -left-[40px] bottom-0 z-40 flex h-20 w-20 items-center justify-center rounded-full md:-left-[40px] ${pathname === '/info' ? 'bg-white' : 'bg-primaryColor'} shadow-2xl md:h-20 md:w-20`}
                     style={{
                         ...(pathname !== '/info' && {
                             boxShadow: `0 5px 15px rgb(255 56 92 / 0.6)`,
@@ -29,7 +47,7 @@ const SearchDrawer = () => {
                     }}
                 >
                     <SearchSvg
-                        className='h-10 w-10 md:h-12 md:w-12'
+                        className='h-10 w-10 md:h-11 md:w-11'
                         pathProps={{
                             fill: `${pathname === '/info' ? '#FF385C' : 'white'}`,
                         }}
@@ -37,20 +55,9 @@ const SearchDrawer = () => {
                 </div>
             </DrawerTrigger>
             <DrawerContent>
-                <DrawerHeader>
-                    <DrawerTitle>
-                        <Input className='w-5/6 rounded-full shadow-sm focus-visible:ring-0' />
-                    </DrawerTitle>
-                    <DrawerDescription>
-                        This action cannot be undone.
-                    </DrawerDescription>
+                <DrawerHeader className='gap-y-4'>
+                    <SearchNFilters setOpen={setOpen} />
                 </DrawerHeader>
-                <DrawerFooter>
-                    <Button>Submit</Button>
-                    <DrawerClose>
-                        {/* <Button variant='outline'>Cancel</Button> */}
-                    </DrawerClose>
-                </DrawerFooter>
             </DrawerContent>
         </Drawer>
     )

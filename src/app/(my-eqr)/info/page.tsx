@@ -1,32 +1,32 @@
 import React from 'react'
-import BackButton from './_components/BackButton'
+import BackButton from '@/app/_components/BackButton'
 import { Card } from '@/components/ui/card'
 import { CallSvg, EmailSvg } from '@/components/svgs'
 
 const InfoPage = () => {
     return (
-        <div className='flex min-h-full flex-col items-center justify-center gap-8 overflow-y-scroll !overscroll-y-none bg-primaryColor p-6 pb-20 pt-8 md:gap-12'>
-            <div className='w-full'>
+        <div className='flex min-h-full flex-col items-center justify-center gap-8 overflow-y-scroll !overscroll-y-none bg-primaryColor p-6 pb-20 pt-8 md:gap-12 lg:flex-row lg:flex-wrap lg:items-stretch lg:gap-y-0 lg:p-4'>
+            <div className='flex w-full flex-col justify-end pb-4'>
                 <BackButton />
                 <div className='grid grid-cols-7'>
-                    <div className='col-span-3 justify-self-end text-8xl font-extrabold text-darkGrey md:text-9xl'>
+                    <div className='col-span-3 justify-self-end text-8xl font-extrabold text-darkGrey md:text-9xl lg:text-8xl'>
                         My
                     </div>
-                    <div className='col-span-4 justify-self-start text-8xl font-extrabold text-white md:text-9xl'>
+                    <div className='col-span-4 justify-self-start text-8xl font-extrabold text-white md:text-9xl lg:text-8xl'>
                         EQR
                     </div>
-                    <div className='col-span-4 col-start-4 text-xl text-white md:text-2xl'>
+                    <div className='col-span-4 col-start-4 text-xl text-white md:text-2xl lg:text-xl'>
                         Emergency Quick Response
                     </div>
                 </div>
             </div>
-            <section className='flex w-full flex-col'>
+            <section className='flex w-full flex-col lg:w-5/12'>
                 <div className='mb-2 flex flex-row justify-between px-2 text-2xl font-bold text-white'>
                     <span>About</span>
                     <span>v1.0</span>
                 </div>
                 <div>
-                    <Card className='p-6 text-lg text-slate-600 shadow-xl md:text-xl'>
+                    <Card className='p-6 text-lg leading-6 text-slate-600 shadow-xl md:text-xl md:leading-7'>
                         <p className='mb-4'>
                             MyEQR is a dedicated application designed to ensure
                             the safety of emergency responders and drivers by
@@ -44,10 +44,10 @@ const InfoPage = () => {
                     </Card>
                 </div>
             </section>
-            <section className='w-full'>
+            <section className='w-full lg:w-5/12 '>
                 <div className='mb-4 flex flex-col px-2 text-white'>
                     <span className='text-2xl font-bold'>Contact Us</span>
-                    <span className='text-lg leading-6'>
+                    <span className='text-lg leading-6 md:leading-7'>
                         You can get in touch with us through below platform. Our
                         team will reach out to you as soon as it would be
                         possible

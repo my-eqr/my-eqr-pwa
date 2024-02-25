@@ -1,22 +1,10 @@
-'use client'
 import React from 'react'
-import { useOrientation } from '@uidotdev/usehooks'
-import { ORIENTATION } from '@/types'
 import Mode from './Mode'
 import ContinueButton from './ContinueButton'
 
 const SelectMode = () => {
-    const { type } = useOrientation()
-
-    let SHOW_IN_LANSCAPE = 'flex'
-    let SHOW_IN_POTRAIT = 'hidden'
-    if (type === ORIENTATION.PORTRAIT) {
-        SHOW_IN_LANSCAPE = 'hidden'
-        SHOW_IN_POTRAIT = 'flex'
-    }
-
     return (
-        <main className=' flex min-h-screen w-full flex-col items-start justify-center overflow-auto bg-primaryColor p-12'>
+        <div className='absolute inset-0 w-full flex-col items-start justify-center overflow-y-scroll overscroll-auto bg-primaryColor px-12 py-12 md:flex'>
             <div className='mb-10 text-8xl font-extrabold text-darkGrey md:text-9xl'>
                 My<span className='text-white'>EQR</span>
             </div>
@@ -30,21 +18,21 @@ const SelectMode = () => {
                     </div>
                 </div>
                 <div
-                    className={`mt-14 items-center justify-end ${SHOW_IN_LANSCAPE}`}
+                    className={`mt-14 hidden items-center justify-end lg:flex`}
                 >
                     <ContinueButton />
                 </div>
             </div>
 
-            <div className='mt-12 grid grid-cols-1 gap-8 md:grid-cols-3'>
-                <Mode />
+            <div className='mt-12 grid grid-cols-1 gap-8 md:grid-cols-3 lg:mt-6'>
+                <Mode isEntry />
             </div>
             <div
-                className={`mt-14 w-full items-center justify-end ${SHOW_IN_POTRAIT}`}
+                className={`mt-14 flex w-full items-center justify-end lg:hidden`}
             >
                 <ContinueButton />
             </div>
-        </main>
+        </div>
     )
 }
 

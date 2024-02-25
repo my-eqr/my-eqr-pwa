@@ -1,8 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { RescueSvg, RepairSvg, TrainingSvg } from '@/components/svgs'
 import ModeCard from './ModeCard'
-import { MODES } from '@/types'
+import { MODES } from '@/constants'
 import { useModeStore } from '@/store'
 
 type MyEqrModes = {
@@ -14,12 +14,22 @@ type MyEqrModes = {
     onSelect: () => void
 }[]
 
-const Mode = () => {
-    const { activeMode, updateActiveMode } = useModeStore()
+interface ModeProps {
+    isEntry?: boolean
+    setOpen?: Dispatch<SetStateAction<boolean>>
+}
+
+const Mode = ({ setOpen = () => {}, isEntry = false }: ModeProps) => {
+    const { activeMode, updateActiveMode, setActiveMode } = useModeStore()
     const [selectedMode, setSelectedMode] = useState(activeMode || MODES.RESCUE)
 
     const onSelectHandler = (mode: MODES) => {
-        updateActiveMode(mode)
+        if (isEntry) {
+            setActiveMode(mode)
+        } else {
+            updateActiveMode(mode)
+            setTimeout(() => setOpen(false), 200)
+        }
         setSelectedMode(mode)
     }
 

@@ -12,11 +12,16 @@
 }
 
 html {
-    overscroll-behavior-y: contain;
+    overflow: hidden;
     overscroll-behavior: none;
 }
 
+.scrollable {
+    overflow: auto; /* Enable scrolling */
+    overscroll-behavior: contain; /* Contain the overscroll to this element only */
+    max-height: 100vh; /* Optional: Limit the height to the viewport height */
+}
 /* html {
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
+    overscroll-behavior-y: contain;
+    overscroll-behavior: none;
 } */

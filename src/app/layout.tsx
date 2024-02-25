@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Inter as FontSans, Roboto_Condensed } from 'next/font/google'
 import { GeistSans } from 'geist/font/sans'
 import '@/styles/globals.css'
+import { Apollo } from '@/components/wrappers/Apollo'
 
 // const fontSans = FontSans({ subsets: ['cyrillic'], variable: '--font-sans' })
 const robotoCondensed = Roboto_Condensed({
@@ -79,6 +80,13 @@ export default function RootLayout({
                 sizes='167x167'
                 href='touch-icon-ipad-retina.png'
             />
+            <link
+                rel='stylesheet'
+                href='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf_viewer.min.css'
+                integrity='sha512-v7RQDI7qsfFNaXRzzylpsVV7ncQBdyozLze5YNgox/0z4Mc3Ellt2dBd0CbmufeD7IIh5TCJQ8ORAF/KvzVITg=='
+                crossOrigin='anonymous'
+                referrerPolicy='no-referrer'
+            />
         </Head>
     )
 
@@ -86,7 +94,7 @@ export default function RootLayout({
         <html lang='en' className={robotoCondensed.className}>
             <HeadMain />
             <body className='bg-background font-geist-sans font-mono antialiased'>
-                {children}
+                <Apollo>{children}</Apollo>
             </body>
         </html>
     )

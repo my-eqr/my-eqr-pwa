@@ -1,25 +1,20 @@
 import React from 'react'
 import TopNavBar from './_components/topNavBar'
 import BottomNavBar from './_components/bottomNavBar'
-import { TOP_HEIGHT, BOTTOM_HEIHT, BODY_OFFSET } from '@/constants'
+import Content from './_components/Content'
+import { getBrands } from '@/actions'
 
-const MyEqrLayout = ({
+const MyEqrLayout = async ({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) => {
+    const { data: brands } = await getBrands()
     return (
-        <div className='flex flex-col overflow-hidden bg-white'>
-            {/* <div className='fixed inset-0 flex flex-col overflow-hidden bg-white'> */}
-            <TopNavBar navBarHeight={TOP_HEIGHT} />
-
-            <div
-                className={`overflow-y-auto`}
-                style={{ height: `calc(100vh - ${BODY_OFFSET}rem)` }}
-            >
-                {children}
-            </div>
-            <BottomNavBar navBarHeight={BOTTOM_HEIHT} />
+        <div className='flex flex-col overflow-y-hidden bg-white'>
+            <TopNavBar brands={brands} />
+            <Content>{children}</Content>
+            <BottomNavBar />
         </div>
     )
 }

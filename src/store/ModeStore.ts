@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { MODES } from '@/types'
+import { MODES, SESSION_STORAGE } from '@/constants'
 
 // =================================================================================================
 //                                       TYPES
@@ -7,7 +7,8 @@ import { MODES } from '@/types'
 
 export type ModeStore = {
     activeMode?: MODES
-    updateActiveMode: (newMode: MODES) => void
+    updateActiveMode: (newMode: MODES) => void //will update session storage as well
+    setActiveMode: (newMode: MODES) => void
     resetActiveMode: () => void
 }
 
@@ -26,6 +27,11 @@ const initialState = {
 export const useModeStore = create<ModeStore>(set => ({
     ...initialState,
     updateActiveMode: (newMode: MODES) =>
+        set(state => {
+            sessionStorage.setItem(SESSION_STORAGE.ACTIVE_MODE, newMode)
+            return { ...state, activeMode: newMode }
+        }),
+    setActiveMode: (newMode: MODES) =>
         set(state => ({ ...state, activeMode: newMode })),
     resetActiveMode: () => set(state => ({ ...state, activeMode: undefined })),
 }))
