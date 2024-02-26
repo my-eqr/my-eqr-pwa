@@ -56,11 +56,6 @@ const BottomNavBar = ({}: BottomNavBarProps) => {
     }
 
     const onFavouriteClick = () => {
-        console.log('pathname', pathname)
-        console.log('searchParams', {
-            searchParams,
-            favourite: searchParams.get('favourite'),
-        })
         if (!searchParams.get('favourite')) {
             updateFavouriteFilter(true)
             const updatedFilter = {

@@ -40,8 +40,6 @@ const CarList = ({ cars, subHeaderHeight }: CarListProps) => {
         return [row, 3 * 1, row * 1 + 1]
     }, [isLg, isSm])
 
-    console.log('spacingXOffset', spacingXOffset)
-
     useEffect(() => {
         setCarList(cars)
     }, [cars])

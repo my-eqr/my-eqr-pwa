@@ -63,8 +63,6 @@ const CarsPage = ({
                 }),
             })
 
-            console.log('data', data)
-
             if (data && favourite && favourite === 'true') {
                 const favouritedCars = JSON.parse(
                     localStorage.getItem(LOCAL_STORAGE.FAVOURITED_CARS) || '[]'

@@ -73,7 +73,6 @@ export function removeFilter<Key extends keyof CarFilters>(
 export function generateQueryString<Key extends keyof CarFilters>(
     filters: CarFilters
 ): string {
-    console.log('filters', filters)
     return [
         (filters._q && `_q=${filters._q}`) || '',
         (filters.brand.length > 0 && `brand=${filters.brand}`) || '',

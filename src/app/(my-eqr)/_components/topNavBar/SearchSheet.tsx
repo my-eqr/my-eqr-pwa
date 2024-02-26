@@ -37,11 +37,7 @@ const SearchSheet = () => {
                         />
                     </div>
                 </SheetTrigger>
-                <SheetContent
-                    onCloseAutoFocus={() => console.log('aksdjflasdjflksdjf')}
-                    className='pb-4'
-                    side='top'
-                >
+                <SheetContent className='pb-4' side='top'>
                     <SheetHeader className='gap-y-2'>
                         <SearchNFilters setOpen={setOpen} />
                     </SheetHeader>

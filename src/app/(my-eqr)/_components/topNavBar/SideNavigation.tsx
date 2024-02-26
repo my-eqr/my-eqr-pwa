@@ -18,7 +18,6 @@ const SideNavigation = () => {
     const pathname = usePathname()
     const router = useRouter()
     const [open, setOpen] = useState(false)
-    console.log('pathName', pathname)
     const onHomeHandler = () => {
         router.replace('/home')
         setOpen(false)
@@ -32,7 +31,6 @@ const SideNavigation = () => {
                     <Menu className='mr-3 hidden lg:block' />
                 </SheetTrigger>
                 <SheetContent
-                    onCloseAutoFocus={() => console.log('aksdjflasdjflksdjf')}
                     className='!max-w-60 border-0 bg-primaryColor px-4 pb-4 font-semibold text-white'
                     side='left'
                 >

@@ -25,9 +25,6 @@ const BrandList = ({ brands }: BrandListProps) => {
     }, [isLg])
     const SPACING_OFFSET = isMd ? HOME_ROW * 1 + 1 : HOME_ROW * 0.5 + 0.5
     const router = useRouter()
-    console.log('brand', {
-        brands,
-    })
 
     return (
         <>
