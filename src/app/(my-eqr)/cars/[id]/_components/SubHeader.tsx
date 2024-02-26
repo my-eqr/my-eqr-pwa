@@ -166,12 +166,12 @@ const SubHeader = ({ car }: SubHeaderProps) => {
                         fill: isFavourited ? '#FF385C' : 'rgb(148 163 184)',
                     }}
                     onClick={() => toggleFavourite()}
-                    // pathProps={{ fill: '#FF385C' }}
                 />
                 <div className='flex flex-row items-center'>
                     <Button
                         className='rounded-none rounded-l-md bg-primaryColor px-3 font-bold'
                         onClick={downloadFile}
+                        disabled={!fileUrl}
                     >
                         <Download className='mr-2' size={20} />
                         Download as PDF
@@ -192,14 +192,16 @@ const SubHeader = ({ car }: SubHeaderProps) => {
                                 />
                                 Make available offline
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={openLink}>
-                                <LinkIcon
-                                    className='mr-3'
-                                    size={22}
-                                    color='rgb(148 163 184)'
-                                />
-                                Open Original
-                            </DropdownMenuItem>
+                            {originalLink && (
+                                <DropdownMenuItem onClick={openLink}>
+                                    <LinkIcon
+                                        className='mr-3'
+                                        size={22}
+                                        color='rgb(148 163 184)'
+                                    />
+                                    Open Original
+                                </DropdownMenuItem>
+                            )}
                             {activeMode === MODES.TRAINING &&
                                 fileType === FILE_TYPE.RESCUE_MANUAL && (
                                     <DropdownMenuItem
@@ -237,13 +239,19 @@ const SubHeader = ({ car }: SubHeaderProps) => {
                                     </DropdownMenuItem>
                                 )}
 
-                            <DropdownMenuItem className='block md:hidden'>
+                            <DropdownMenuItem
+                                className='block md:hidden'
+                                onClick={() => toggleFavourite()}
+                            >
                                 <FavouriteSvg
                                     className='mr-3 inline h-[22px] w-[22px] md:h-8 md:w-8'
-                                    pathProps={{ fill: 'rgb(148 163 184)' }}
-                                    // pathProps={{ fill: '#FF385C' }}
+                                    pathProps={{
+                                        fill: isFavourited
+                                            ? '#FF385C'
+                                            : 'rgb(148 163 184)',
+                                    }}
                                 />
-                                Add to favourite
+                                {isFavourited ? 'Unfavourite' : 'Favourite'}
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

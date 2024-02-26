@@ -29,9 +29,9 @@ const PdfViewer = ({ car }: PdfViewerProps) => {
 
     return (
         <div
-            className='flex w-full'
+            className='relative flex w-full'
             style={{
-                height: `calc(100vh - ${subHeaderHeight}rem - ${contentOffset}rem)`,
+                height: `calc(100vh - ${subHeaderHeight}rem - ${contentOffset}rem) !important`,
             }}
         >
             <iframe
@@ -47,8 +47,12 @@ const PdfViewer = ({ car }: PdfViewerProps) => {
                     width: '100%',
                     height: `calc(100vh - ${contentOffset}rem - ${subHeaderHeight}px)`,
                 }}
-                className=''
             />
+            {fileUrl === undefined && (
+                <div className='absolute flex h-full w-full items-center justify-center text-xl text-white'>
+                    Document is not available...
+                </div>
+            )}
         </div>
     )
 }

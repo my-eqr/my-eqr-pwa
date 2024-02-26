@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { SearchSvg } from '@/components/svgs'
 import { Input } from '@/components/ui/input'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import SearchNFilters from '../searchNFilters'
 
 interface SearchDrawerProps {
@@ -23,14 +23,15 @@ interface SearchDrawerProps {
 const SearchDrawer = ({ setIndicatorLeft }: SearchDrawerProps) => {
     const searchRef = useRef<HTMLButtonElement>(null)
     const pathname = usePathname()
+    const searchParams = useSearchParams()
     const [open, setOpen] = useState(false)
 
     useLayoutEffect(() => {
         const isCarsPath = /^\/cars($|\/.*)/.test(pathname)
-        if (isCarsPath) {
+        if (isCarsPath && !searchParams.get('favourite')) {
             setIndicatorLeft(searchRef.current?.offsetLeft! - 32 || 0)
         }
-    }, [pathname, setIndicatorLeft])
+    }, [pathname, searchParams, setIndicatorLeft])
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>

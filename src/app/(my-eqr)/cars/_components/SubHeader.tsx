@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import { CarFilters } from '@/types'
 import FilterChip from './FilterChip'
 import { useFilterStore } from '@/store'
-import { generateQueryString, patchFilter } from '@/lib/utils'
+import { generateQueryString, removeFilter } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import BackButton from '@/app/_components/BackButton'
 import { Button } from '@/components/ui/button'
@@ -51,7 +51,7 @@ const SubHeader = ({ resultSize = 0, subHeaderHeight }: SubHeaderProps) => {
         filterKey: Key,
         filterValueToExclude: string
     ) => {
-        const updatedFilter = patchFilter(
+        const updatedFilter = removeFilter(
             filters,
             filterKey,
             filterValueToExclude

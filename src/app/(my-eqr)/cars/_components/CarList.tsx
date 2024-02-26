@@ -28,17 +28,19 @@ const CarList = ({ cars, subHeaderHeight }: CarListProps) => {
     // =============================================================================================
     //                                   EFFECTS
     // =============================================================================================
-    const [rows, spacingOffset] = useMemo(() => {
+    const [rows, spacingXOffset, spacingYOffset] = useMemo(() => {
         let row = 2
         if (isLg) {
             row = 2
-            return [row, row * 2.5 + 2.5]
+            return [row, 3 * 2.5, row * 2.5 + 2.5]
         } else if (isSm) {
             row = 3
-            return [row, row * 1 + 1]
+            return [row, 3 * 2.5, row * 1 + 1]
         }
-        return [row, row * 1 + 1]
+        return [row, 3 * 1, row * 1 + 1]
     }, [isLg, isSm])
+
+    console.log('spacingXOffset', spacingXOffset)
 
     useEffect(() => {
         setCarList(cars)
@@ -93,7 +95,8 @@ const CarList = ({ cars, subHeaderHeight }: CarListProps) => {
     // =============================================================================================
 
     return (
-        <div className='grid h-full w-full grid-cols-2 gap-4 overflow-y-scroll p-4 lg:grid-cols-2 lg:gap-10 lg:p-10'>
+        <div className='flex h-full w-full flex-row flex-wrap content-start items-start gap-4 overflow-y-scroll p-4 lg:gap-10 lg:p-10'>
+            {/* <div className='grid h-full w-full grid-cols-2 gap-4 overflow-y-scroll p-4 lg:grid-cols-2 lg:gap-10 lg:p-10'> */}
             {carList && carList?.length > 0 ? (
                 carList.map(car => (
                     <CarCard
@@ -101,7 +104,8 @@ const CarList = ({ cars, subHeaderHeight }: CarListProps) => {
                         contentOffset={contentOffset}
                         subHeaderHeight={subHeaderHeight}
                         rows={rows}
-                        spacingOffset={spacingOffset}
+                        spacingXOffset={spacingXOffset}
+                        spacingYOffset={spacingYOffset}
                         car={car}
                         isFavourite={
                             favouritedCars && favouritedCars.includes(car?.id!)

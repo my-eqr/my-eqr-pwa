@@ -21,6 +21,15 @@ html {
     overscroll-behavior: contain; /* Contain the overscroll to this element only */
     max-height: 100vh; /* Optional: Limit the height to the viewport height */
 }
+
+.truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
 /* html {
     overscroll-behavior-y: contain;
     overscroll-behavior: none;

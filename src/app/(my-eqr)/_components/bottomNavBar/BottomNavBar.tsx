@@ -7,28 +7,38 @@ import React, {
     MouseEventHandler,
 } from 'react'
 import { SearchSvg, FavouriteSvg, HomeSvg } from '@/components/svgs'
-import Link from 'next/link'
 import SearchDrawer from './SearchDrawer'
 import { cn } from '@/lib/utils'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useLayoutStore } from '@/store/LayoutStore'
 import { useMediaQuery } from '@uidotdev/usehooks'
 import { BOTTOM_HEIGHT } from '@/constants'
+import { useFilterStore } from '@/store'
+import { generateQueryString } from '@/lib/utils'
 
 interface BottomNavBarProps {}
 const BottomNavBar = ({}: BottomNavBarProps) => {
     const homeRef = useRef<HTMLDivElement>(null)
-    const favRef = useRef<HTMLAnchorElement>(null)
+    const favRef = useRef<HTMLDivElement>(null)
     const router = useRouter()
     const isLg = useMediaQuery('only screen and (min-width: 1024px)')
     const [indicatorLeft, setIndicatorLeft] = useState(0)
     const [indicatorWidth, setIndicatorWidth] = useState(0)
     const { bottomNavHeight, updateBottomNavHeight } = useLayoutStore()
+    const { filters, updateFavouriteFilter } = useFilterStore()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
     useLayoutEffect(() => {
         setIndicatorLeft(homeRef.current?.offsetLeft || 0)
         setIndicatorWidth(homeRef.current?.offsetWidth || 0)
     }, [])
+
+    useLayoutEffect(() => {
+        if (searchParams.get('favourite') === 'true') {
+            setIndicatorLeft(favRef.current?.offsetLeft || 0)
+        }
+    }, [searchParams])
 
     useLayoutEffect(() => {
         if (isLg) {
@@ -38,13 +48,28 @@ const BottomNavBar = ({}: BottomNavBarProps) => {
         }
     }, [isLg, updateBottomNavHeight])
 
-    const changeIndicator: MouseEventHandler<
-        HTMLAnchorElement | HTMLDivElement
-    > = e => {
+    const changeIndicator: MouseEventHandler<HTMLDivElement> = e => {
         setIndicatorLeft(e.currentTarget.offsetLeft || 0)
         router.replace('/home')
         sessionStorage.clear()
         router.refresh()
+    }
+
+    const onFavouriteClick = () => {
+        console.log('pathname', pathname)
+        console.log('searchParams', {
+            searchParams,
+            favourite: searchParams.get('favourite'),
+        })
+        if (!searchParams.get('favourite')) {
+            updateFavouriteFilter(true)
+            const updatedFilter = {
+                ...filters,
+                favouriteEnabled: true,
+            }
+            const queryString = generateQueryString(updatedFilter)
+            router.push(`/cars?${queryString}`)
+        }
     }
 
     return (
@@ -65,8 +90,6 @@ const BottomNavBar = ({}: BottomNavBarProps) => {
             <div className='flex h-full w-full flex-row items-center justify-around'>
                 <div
                     ref={homeRef}
-                    // href='/home'
-                    // scroll={false}
                     data-active='false'
                     className='flex items-center justify-center'
                     onClick={changeIndicator}
@@ -74,14 +97,13 @@ const BottomNavBar = ({}: BottomNavBarProps) => {
                     <HomeSvg className='h-10 w-10 md:h-10 md:w-10' />
                 </div>
                 <SearchDrawer setIndicatorLeft={setIndicatorLeft} />
-                <Link
-                    href='/cars?favourites=true'
+                <div
                     ref={favRef}
-                    onClick={changeIndicator}
+                    onClick={onFavouriteClick}
                     className='flex items-center justify-center'
                 >
                     <FavouriteSvg className='h-10 w-10 md:h-10 md:w-10' />
-                </Link>
+                </div>
             </div>
         </div>
     )

@@ -12,7 +12,7 @@ export function wait(milliseconds: number) {
     })
 }
 
-// export function patchFilter<Key extends keyof CarFilters>(
+// export function removeFilter<Key extends keyof CarFilters>(
 //     filters: CarFilters,
 //     filterKey: Key,
 //     filterValueToExclude: string
@@ -29,14 +29,14 @@ export function wait(milliseconds: number) {
 // }
 
 /**
- * Updates the given filters by excluding the specified filter value from the array associated with the filter key. If the filterKey is '_q', it updates the filter to an empty string. If the filterKey is neither an array nor '_q', it returns the unmodified filters.
+ * Removes the specified filter value from the provided filters object.
  *
- * @param {CarFilters} filters - the current set of filters
- * @param {Key} filterKey - the key of the filter to be modified
- * @param {string} filterValueToExclude - the value to be excluded from the filter array
- * @return {CarFilters} the updated filters
+ * @param {CarFilters} filters - The object containing the filters.
+ * @param {Key} filterKey - The key of the filter to be modified.
+ * @param {string} filterValueToExclude - The value to be removed from the filter array.
+ * @return {CarFilters} The modified filters object after removing the specified value.
  */
-export function patchFilter<Key extends keyof CarFilters>(
+export function removeFilter<Key extends keyof CarFilters>(
     filters: CarFilters,
     filterKey: Key,
     filterValueToExclude: string
