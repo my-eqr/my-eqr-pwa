@@ -48,7 +48,7 @@ const SideNavigation = () => {
                             />
                             Home
                         </div>
-                        <Link
+                        {/* <Link
                             href='/cars?favourites=true'
                             className={cn(
                                 'flex w-full items-center rounded-lg  py-2 pl-4 text-lg',
@@ -63,7 +63,7 @@ const SideNavigation = () => {
                                 pathProps={{ fill: 'white' }}
                             />
                             Favourite
-                        </Link>
+                        </Link> */}
                     </div>
                 </SheetContent>
             </Sheet>

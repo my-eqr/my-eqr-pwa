@@ -1,4 +1,6 @@
 'use server'
+import fs from 'fs'
+import path from 'path'
 import { cookies } from 'next/headers'
 import { Brands, Car, Cars, Payload } from '@/types'
 import { getClient } from './lib/apolloClient'
@@ -72,5 +74,36 @@ export async function getCar(carId: string): Promise<Payload<Car>> {
         data: simplify(data!).car,
         status: 200,
         message: GENERIC_MESSAGE.SUCCESS,
+    }
+}
+
+export async function getFile(url: string): Promise<Payload<string>> {
+    const response = await fetch(url)
+    if (!response.ok) {
+        return {
+            success: false,
+            message: `Could not fetch PDF: ${response.statusText}`,
+            status: response.status,
+        }
+    }
+
+    const arrayBuffer = await response.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    const filename = 'manual.pdf'
+    const publicDir = path.resolve('./public', 'pdfs')
+    const filePath = path.join(publicDir, filename)
+
+    if (!fs.existsSync(publicDir)) {
+        fs.mkdirSync(publicDir)
+    }
+
+    fs.writeFileSync(filePath, buffer)
+
+    return {
+        success: true,
+        data: `/pdfs/${filename}`,
+        status: 200,
+        message: 'Successfully fetched and saved PDF.',
     }
 }

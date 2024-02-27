@@ -41,6 +41,7 @@ const PdfViewer = ({ car }: PdfViewerProps) => {
                 // src={`https://view.officeapps.live.com/op/embed.aspx?src=[http://192.168.0.02:1337/uploads/Dickinson_Sample_Slides_969d7fd10d.pptx]`}
                 // src={`/pdfjs-4.0.379-dist/web/viewer.html?file=http://172.20.10.11:1337/uploads/Model_3_Emergency_Response_Guide_en_a8e5743c59.pdf`}
                 src={`/pdfjs-4.0.379-dist/web/viewer.html?file=${STRAPI}${fileUrl}`}
+                // src={`/pdfjs-4.0.379-dist/web/viewer.html?file=${STRAPI}${fileUrl}`}
                 // src={`/pdfjs-4.0.379-dist/web/viewer.html?file=http://192.168.0.02:1337/uploads/Model_3_Emergency_Response_Guide_en_a8e5743c59.pdf`}
                 // src={`/pdfjs-4.0.379-dist/web/viewer.html?file=http://192.168.0.14:1337/uploads/Mercedes_Benz_A_Class_250e_Sedan_2023_4d_Hybrid_EN_177_185v1_0_eb5cf44383.pdf`}
                 style={{

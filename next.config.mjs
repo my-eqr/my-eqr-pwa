@@ -4,13 +4,26 @@ const withPWA = withPWAInit({
     dest: 'public',
     register: true,
     skipWaiting: true,
+    cacheOnFrontEndNav: true,
+    aggressiveFrontEndNavCaching: true,
+    reloadOnOnline: true,
+    fallbacks: {
+        //image: "/static/images/fallback.png",
+        document: '/offline',
+        // font: '/static/font/fallback.woff2',
+        // audio: ...,
+        // video: ...,
+    },
+    workboxOptions: {
+        disableDevLogs: true,
+    },
     // cacheOnFrontEndNav: true,
 })
 
 export default withPWA({
     // next.js config
     reactStrictMode: false,
-    swcMinify: false,
+    swcMinify: true,
     images: {
         remotePatterns: [
             {

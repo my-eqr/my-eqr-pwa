@@ -30,6 +30,8 @@ import { useFilterStore, useModeStore } from '@/store'
 import { MODES } from '@/constants'
 import { Car } from '@/types'
 import { useFileStore } from '../_stores/FileStore'
+import { userAgent } from 'next/server'
+import { getFile } from '@/actions'
 
 interface SubHeaderProps {
     car?: Car
@@ -42,7 +44,6 @@ const SubHeader = ({ car }: SubHeaderProps) => {
     // =============================================================================================
     //                                      EFFECTS
     // =============================================================================================
-
     useEffect(() => {
         const favouritedCars: string[] = JSON.parse(
             localStorage.getItem(LOCAL_STORAGE.FAVOURITED_CARS) || '[]'
@@ -133,12 +134,28 @@ const SubHeader = ({ car }: SubHeaderProps) => {
         link.click()
     }
 
-    const openLink = () => {
-        const link = document.createElement('a')
-        link.href = originalLink!
-        link.download = fileName
-        link.target = '_blank'
-        link.click()
+    const openLink = async () => {
+        const userAgent = navigator.userAgent
+        const isIos = userAgent.match(/iPhone|iPad|iPod|Macintosh/i)
+        const isFileUrl =
+            /\.pdf$/i.test(originalLink!) ||
+            originalLink!.toLowerCase().includes('pdf') ||
+            originalLink!.toLowerCase().includes('docs') ||
+            originalLink!.toLowerCase().includes('viewer')
+        originalLink!.toLowerCase().includes('upload')
+
+        if (isFileUrl && !isIos) {
+            const { data: url } = await getFile(originalLink!)
+
+            const viewerUrl = `/pdfjs-4.0.379-dist/web/viewer.html?file=${url}`
+            // const viewerUrl = `https://docs.google.com/gview?embedded=true&url=${url}`
+            window.open(viewerUrl, '_blank')
+        } else {
+            const link = document.createElement('a')
+            link.href = originalLink!
+            link.target = '_blank'
+            link.click()
+        }
     }
 
     return (
@@ -193,7 +210,10 @@ const SubHeader = ({ car }: SubHeaderProps) => {
                                 Make available offline
                             </DropdownMenuItem>
                             {originalLink && (
-                                <DropdownMenuItem onClick={openLink}>
+                                <DropdownMenuItem
+                                    // onClick={openLink}
+                                    onClick={async () => await openLink()}
+                                >
                                     <LinkIcon
                                         className='mr-3'
                                         size={22}
