@@ -9,7 +9,7 @@ import { setContext } from '@apollo/client/link/context'
 import https from 'https'
 
 export const { getClient } = registerApolloClient(() => {
-    process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
+    // process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
     const errorLink = onError(({ graphQLErrors, networkError }) => {
         if (graphQLErrors)
             graphQLErrors.forEach(({ message, locations, path }) =>
