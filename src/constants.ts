@@ -18,6 +18,7 @@ export enum LOCAL_STORAGE {
 
 export enum SESSION_STORAGE {
     ACTIVE_MODE = 'activeMode',
+    IS_SYNCED = 'isSynchronized',
 }
 
 export enum ORIENTATION {

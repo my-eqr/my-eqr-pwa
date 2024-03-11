@@ -6,7 +6,16 @@ export default graphql(`
             data {
                 id
                 attributes {
-                    name
+                    userManual {
+                        originalLink
+                        userManual {
+                            data {
+                                attributes {
+                                    url
+                                }
+                            }
+                        }
+                    }
                     rescueManual {
                         originalLink
                         rescueSheet {
@@ -17,15 +26,35 @@ export default graphql(`
                             }
                         }
                     }
-                    userManual {
-                        userManual {
-                            data {
-                                attributes {
-                                    url
+                    name
+                    image {
+                        data {
+                            attributes {
+                                url
+                            }
+                        }
+                    }
+                    brand {
+                        data {
+                            attributes {
+                                name
+                                logo {
+                                    data {
+                                        attributes {
+                                            url
+                                        }
+                                    }
                                 }
                             }
                         }
-                        originalLink
+                    }
+                    metadata {
+                        bodyType
+                        modelYear {
+                            start
+                            end
+                        }
+                        vehicleType
                     }
                 }
             }

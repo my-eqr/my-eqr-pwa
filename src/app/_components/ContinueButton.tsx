@@ -6,7 +6,10 @@ import { useRouter } from 'next/navigation'
 import { useModeStore } from '@/store'
 import { SESSION_STORAGE } from '@/constants'
 
-const ContinueButton = () => {
+interface ContinueButtonProps {
+    disabled?: boolean
+}
+const ContinueButton = ({ disabled = false }: ContinueButtonProps) => {
     const router = useRouter()
     const { activeMode } = useModeStore()
 
@@ -19,6 +22,7 @@ const ContinueButton = () => {
             type='submit'
             className='h-14 w-3/6 rounded-xl px-6 text-lg font-bold shadow-lg md:w-48'
             onClick={onSelectModeHandler}
+            disabled={disabled}
         >
             Continue
             <EnterIcon className='ml-auto h-6 w-6' />

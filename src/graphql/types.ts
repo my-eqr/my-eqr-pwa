@@ -1369,7 +1369,7 @@ export type GetCarQueryVariables = Exact<{
 }>;
 
 
-export type GetCarQuery = { __typename?: 'Query', car?: { __typename?: 'CarEntityResponse', data?: { __typename?: 'CarEntity', id?: string | null, attributes?: { __typename?: 'Car', name: string, rescueManual?: { __typename?: 'ComponentCarManualsRescueManual', originalLink?: string | null, rescueSheet?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null, userManual?: { __typename?: 'ComponentCarManualsUserManual', originalLink?: string | null, userManual?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null } | null } | null } | null };
+export type GetCarQuery = { __typename?: 'Query', car?: { __typename?: 'CarEntityResponse', data?: { __typename?: 'CarEntity', id?: string | null, attributes?: { __typename?: 'Car', name: string, userManual?: { __typename?: 'ComponentCarManualsUserManual', originalLink?: string | null, userManual?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null, rescueManual?: { __typename?: 'ComponentCarManualsRescueManual', originalLink?: string | null, rescueSheet?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } | null } | null, image: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null }, brand?: { __typename?: 'BrandEntityResponse', data?: { __typename?: 'BrandEntity', attributes?: { __typename?: 'Brand', name: string, logo: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string } | null } | null } } | null } | null } | null, metadata?: { __typename?: 'ComponentCarMetadataMetadata', bodyType: Enum_Componentcarmetadatametadata_Bodytype, vehicleType: Enum_Componentcarmetadatametadata_Vehicletype, modelYear?: { __typename?: 'ComponentYearRangeYearRange', start?: string | null, end?: string | null } | null } | null } | null } | null } | null };
 
 export type GetCarsQueryVariables = Exact<{
   filters?: InputMaybe<CarFiltersInput>;
@@ -1435,7 +1435,16 @@ export const GetCarDocument = gql`
     data {
       id
       attributes {
-        name
+        userManual {
+          originalLink
+          userManual {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
+        }
         rescueManual {
           originalLink
           rescueSheet {
@@ -1446,15 +1455,35 @@ export const GetCarDocument = gql`
             }
           }
         }
-        userManual {
-          userManual {
-            data {
-              attributes {
-                url
+        name
+        image {
+          data {
+            attributes {
+              url
+            }
+          }
+        }
+        brand {
+          data {
+            attributes {
+              name
+              logo {
+                data {
+                  attributes {
+                    url
+                  }
+                }
               }
             }
           }
-          originalLink
+        }
+        metadata {
+          bodyType
+          modelYear {
+            start
+            end
+          }
+          vehicleType
         }
       }
     }

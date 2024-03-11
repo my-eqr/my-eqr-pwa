@@ -6,14 +6,17 @@ import React from 'react'
 
 interface BackButtonProps extends LucideProps {
     className?: string
+    returnRoute?: string
 }
 
-const BackButton = ({ className, ...props }: BackButtonProps) => {
+const BackButton = ({ className, returnRoute, ...props }: BackButtonProps) => {
     const router = useRouter()
     return (
         <CornerUpLeft
-            className={cn('text-white', className)}
-            onClick={() => router.back()}
+            className={cn('cursor-pointer text-white', className)}
+            onClick={() =>
+                returnRoute ? router.push(returnRoute) : router.back()
+            }
             size={36}
             {...props}
         />

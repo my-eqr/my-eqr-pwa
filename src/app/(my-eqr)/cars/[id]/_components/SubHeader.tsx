@@ -26,20 +26,31 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import BackButton from '@/app/_components/BackButton'
-import { useFilterStore, useModeStore } from '@/store'
+import { useDataStore, useFilterStore, useModeStore } from '@/store'
 import { MODES } from '@/constants'
-import { Car } from '@/types'
+import { Car, Cars } from '@/types'
 import { useFileStore } from '../_stores/FileStore'
 import { userAgent } from 'next/server'
 import { getFile } from '@/actions'
+import { generateQueryString } from '@/lib/utils'
 
 interface SubHeaderProps {
     car?: Car
 }
 const SubHeader = ({ car }: SubHeaderProps) => {
     const { activeMode } = useModeStore()
+    const {
+        offlineCars,
+        carRescueSheets,
+        addOfflineCars,
+        updateOfflineCars,
+        updateRescueSheets,
+        removeRescueSheets,
+    } = useDataStore()
+    const { filters } = useFilterStore()
     const { fileType, updateActiveFileType } = useFileStore()
     const [isFavourited, setIsFavourited] = useState(false)
+    console.log('offlineCars', { offlineCars, car, carRescueSheets })
 
     // =============================================================================================
     //                                      EFFECTS
@@ -63,6 +74,15 @@ const SubHeader = ({ car }: SubHeaderProps) => {
             }
         }
     }, [activeMode, updateActiveFileType])
+
+    const availableOffline = useMemo(() => {
+        return (
+            fileType &&
+            fileType === FILE_TYPE.RESCUE_MANUAL &&
+            offlineCars &&
+            offlineCars.some(currentCar => currentCar.id === car?.id)
+        )
+    }, [car?.id, fileType, offlineCars])
 
     const [originalLink, fileUrl, fileName] = useMemo(() => {
         switch (fileType) {
@@ -158,18 +178,71 @@ const SubHeader = ({ car }: SubHeaderProps) => {
         }
     }
 
+    const addRescueSheetForOffline = async () => {
+        const response = await fetch(`${STRAPI}${fileUrl}`)
+        if (!response.ok) {
+            throw new Error('Failed to download rescue sheet')
+        }
+
+        // const blob = await response.blob()
+        // const url = URL.createObjectURL(blob)
+        addOfflineCars([car] as Cars)
+        caches.open('rescue-sheet-cache').then(function (cache) {
+            // Use the add method to fetch and cache the PDF
+            console.log('${STRAPI}${fileUrl}', `${STRAPI}${fileUrl}`)
+            cache
+                .add(
+                    `/pdfjs-4.0.379-dist/web/viewer.html?file=${STRAPI}${fileUrl}`
+                )
+                .then(function () {
+                    console.log(`PDF ${car?.name} saved to cache!`)
+                })
+                .catch(function (error) {
+                    // Handle any errors
+                    console.error('Failed to save PDF to cache:', error)
+                })
+        })
+        // updateRescueSheets({ [`${car?.id!}`]: url })
+    }
+
+    const removeRescueSheetForOffline = () => {
+        updateOfflineCars(
+            offlineCars?.filter(currentCar => currentCar.id !== car?.id) || []
+        )
+        caches.open('rescue-sheet-cache').then(function (cache) {
+            // Use the delete method to remove the PDF
+            cache
+                .delete(`${STRAPI}${fileUrl}`)
+                .then(function (response) {
+                    if (response) {
+                        // if true, deletion was successful
+                        console.log(`PDF ${car?.name} deleted from cache!`)
+                    } else {
+                        // The file was not found in the cache
+                        console.log('PDF not found in cache.')
+                    }
+                })
+                .catch(function (error) {
+                    // Handle any errors that occur during the delete process
+                    console.error('Failed to remove PDF from cache:', error)
+                })
+        })
+        // removeRescueSheets(car?.id!)
+    }
+
     return (
         <div
             className={`sticky flex w-full flex-row items-center justify-between px-2 shadow-md md:px-2`}
             style={{ height: SUB_HEADER_HEIGHT + 'px' }}
         >
             <div className='flex w-3/6 flex-row flex-nowrap items-center md:w-4/6'>
-                <div>
+                <div className='cursor-pointer'>
                     <BackButton
                         color='#FF385C'
                         className='mr-2 md:mr-4'
                         size={26}
                         strokeWidth={3}
+                        returnRoute={`/cars?${generateQueryString(filters)}`}
                     />
                 </div>
                 <div className='overflow-hidden text-ellipsis whitespace-nowrap'>
@@ -201,14 +274,35 @@ const SubHeader = ({ car }: SubHeaderProps) => {
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className='mr-2 md:mr-4'>
-                            <DropdownMenuItem>
-                                <DatabaseZap
-                                    className='mr-3'
-                                    size={22}
-                                    color='rgb(148 163 184)'
-                                />
-                                Make available offline
-                            </DropdownMenuItem>
+                            {fileType === FILE_TYPE.RESCUE_MANUAL &&
+                            !availableOffline ? (
+                                <DropdownMenuItem
+                                    onClick={async () =>
+                                        await addRescueSheetForOffline()
+                                    }
+                                >
+                                    <DatabaseZap
+                                        className='mr-3'
+                                        size={22}
+                                        color='rgb(148 163 184)'
+                                    />
+                                    Enable Offline Access
+                                </DropdownMenuItem>
+                            ) : fileType === FILE_TYPE.RESCUE_MANUAL &&
+                              availableOffline ? (
+                                <DropdownMenuItem
+                                    onClick={() =>
+                                        removeRescueSheetForOffline()
+                                    }
+                                >
+                                    <DatabaseZap
+                                        className='mr-3'
+                                        size={22}
+                                        color='rgb(148 163 184)'
+                                    />
+                                    Disable Offline Access
+                                </DropdownMenuItem>
+                            ) : null}
                             {originalLink && (
                                 <DropdownMenuItem
                                     // onClick={openLink}

@@ -9,7 +9,11 @@ const CarDetailPage = async ({
 }: {
     params: { id: string }
 }) => {
-    const { data } = await getCar(id)
+    const { data, status } = await getCar(id)
+
+    if (status !== 200) {
+        throw new Error('Failed to fetch cars')
+    }
 
     // await wait(5000)
     return (

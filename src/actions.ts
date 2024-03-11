@@ -40,14 +40,21 @@ export async function getBrands(): Promise<Payload<Brands>> {
 export async function getCars(
     filters: InputMaybe<CarFiltersInput>
 ): Promise<Payload<Cars>> {
-    const { data, errors } = await getClient().query({
+    const { data, errors, error, networkStatus } = await getClient().query({
         query: GetCars,
         variables: { filters },
         ...STANDARD_GRAPHQL_CONFIG,
     })
 
-    if (errors) {
-        return { success: false, message: errors[0].message, status: 400 }
+    console.log('getCars errors', {
+        networkStatus,
+        data,
+        error,
+        errors,
+    })
+
+    if (error) {
+        return { success: false, message: error.message, status: 400 }
     }
 
     return {

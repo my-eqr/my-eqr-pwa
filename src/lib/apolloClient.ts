@@ -1,4 +1,4 @@
-import { HttpLink } from '@apollo/client'
+import { HttpLink, InMemoryCache } from '@apollo/client'
 import {
     NextSSRInMemoryCache,
     NextSSRApolloClient,
@@ -43,7 +43,7 @@ export const { getClient } = registerApolloClient(() => {
     })
 
     return new NextSSRApolloClient({
-        cache: new NextSSRInMemoryCache(),
+        cache: new InMemoryCache(),
         link: authLink.concat(errorLink).concat(httpLink),
     })
 })

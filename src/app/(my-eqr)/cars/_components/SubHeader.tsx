@@ -115,6 +115,7 @@ const SubHeader = ({ resultSize = 0, subHeaderHeight }: SubHeaderProps) => {
                     className=''
                     size={26}
                     strokeWidth={3}
+                    returnRoute={'/home'}
                 />
             </div>
             <div className='mr-auto flex flex-row flex-nowrap items-start gap-1 overflow-x-scroll md:gap-2'>

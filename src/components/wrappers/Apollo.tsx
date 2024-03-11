@@ -1,5 +1,4 @@
 'use client'
-
 import { PropsWithChildren } from 'react'
 import {
     ApolloNextAppProvider,
@@ -23,11 +22,11 @@ const makeClient = () => {
     })
 
     const httpLink = new HttpLink({
-        uri: process.env['NEXT_PUBLIC_STRAPI_GRAPHQL_URL'],
+        uri: process.env.NEXT_PUBLIC_STRAPI_GRAPHQL_URL,
     })
 
     const authLink = setContext((_, { headers }) => {
-        const token = process.env['NEXT_PUBLIC_STRAPI_API']
+        const token = process.env.NEXT_PUBLIC_STRAPI_API
         return {
             headers: {
                 ...headers,
@@ -48,7 +47,7 @@ const makeClient = () => {
                       errorLink,
                       httpLink,
                   ])
-                : httpLink,
+                : ApolloLink.from([authLink, errorLink, httpLink]),
     })
 }
 

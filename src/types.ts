@@ -20,3 +20,5 @@ export type CarFilters = {
 export type Brands = SimpleResponse<GetBrandsQuery>
 export type Cars = SimpleResponse<GetCarsQuery>
 export type Car = SimpleResponse<GetCarQuery>
+
+export type CarsRescueSheets = Record<string, string>
